@@ -33,6 +33,18 @@ db.on('error', console.error.bind(console, 'connection error...'));
 db.once('open', function callback(){
     console.log('db opened');
 });
+//get data from db:
+var messageSchema = mongoose.Schema({message: String});
+var Messages = mongoose.model('Messages', messageSchema);
+var mongoMessage = "null";
+Messages.findOne().exec(function (err, messageDoc) {
+    if(err){
+        console.error("DB read error: ", err);
+        mongoMessage = "Error";
+    }
+    mongoMessage = messageDoc.message === "" ? "[No message]" : messageDoc.message;
+})
+
 
 app.get('/partials/:partialPath', function (req, res) {
     res.render('partials/' + req.params.partialPath);
@@ -40,7 +52,9 @@ app.get('/partials/:partialPath', function (req, res) {
 
 //Redirects to index and lets the client-side-routing route depending on what's appended to index
 app.get('*', function (req, res) {
-    res.render('index');
+    res.render('index', {
+        mongoMessage: mongoMessage
+    });
 });
 
 var port = 3030;
