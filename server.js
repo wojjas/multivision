@@ -24,6 +24,10 @@ app.use(stylus.middleware(
 ));
 app.use(express.static(__dirname + '/public'));
 
+app.get('/partials/:partialPath', function (req, res) {
+    res.render('partials/' + req.params.partialPath);
+})
+
 //Redirects to index and lets the client-side-routing route depending on what's appended to index
 app.get('*', function (req, res) {
     res.render('index');
