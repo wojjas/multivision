@@ -1,7 +1,6 @@
 var express = require('express');
 var stylus = require('stylus');
 var logger = require('morgan');
-var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 //var jade = require('jade');
 
