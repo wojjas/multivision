@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 //var jade = require('jade');
 
-var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+var env = process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 
 var app = express();
 
@@ -26,8 +26,18 @@ app.use(stylus.middleware(
 app.use(express.static(__dirname + '/public'));
 
 //MongoDB:
-//mongoose.connect('mongodb://localhost/multivision');
-mongoose.connect('mongodb://wojjas:test@ds063170.mongolab.com:63170/multivision');
+//Choose which db to connect to:
+//  On Windows: set NODE_ENV=dev  (or production)
+//  On Heroku:
+if(env === 'dev'){
+    mongoose.connect('mongodb://localhost/multivision');
+    console.log('local db');
+}
+else{
+    mongoose.connect('mongodb://wojjas:test@ds063170.mongolab.com:63170/multivision');
+    console.log('db on mongolab');
+}
+
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error...'));
 db.once('open', function callback(){
@@ -42,7 +52,12 @@ Messages.findOne().exec(function (err, messageDoc) {
         console.error("DB read error: ", err);
         mongoMessage = "Error";
     }
-    mongoMessage = messageDoc.message === "" ? "[No message]" : messageDoc.message;
+    else if(!messageDoc){
+        console.error("Collection/document not found in DB");
+    }
+    else{
+        mongoMessage = messageDoc.message === "" ? "[Empty field]" : messageDoc.message;
+    }
 })
 
 
