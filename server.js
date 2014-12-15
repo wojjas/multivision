@@ -42,22 +42,23 @@ db.on('error', console.error.bind(console, 'connection error...'));
 db.once('open', function callback(){
     console.log('db opened');
 });
+//Uncommented since not used anymore:
 //get data from db:
-var messageSchema = mongoose.Schema({message: String});
-var Messages = mongoose.model('Messages', messageSchema);
-var mongoMessage = "null";
-Messages.findOne().exec(function (err, messageDoc) {
-    if(err){
-        console.error("DB read error: ", err);
-        mongoMessage = "Error";
-    }
-    else if(!messageDoc){
-        console.error("Collection/document not found in DB");
-    }
-    else{
-        mongoMessage = messageDoc.message === "" ? "[Empty field]" : messageDoc.message;
-    }
-})
+//var messageSchema = mongoose.Schema({message: String});
+//var Messages = mongoose.model('Messages', messageSchema);
+//var mongoMessage = "null";
+//Messages.findOne().exec(function (err, messageDoc) {
+//    if(err){
+//        console.error("DB read error: ", err);
+//        mongoMessage = "Error";
+//    }
+//    else if(!messageDoc){
+//        console.error("Collection/document not found in DB");
+//    }
+//    else{
+//        mongoMessage = messageDoc.message === "" ? "[Empty field]" : messageDoc.message;
+//    }
+//})
 
 
 app.get('/partials/:partialPath', function (req, res) {
@@ -66,9 +67,10 @@ app.get('/partials/:partialPath', function (req, res) {
 
 //Redirects to index and lets the client-side-routing route depending on what's appended to index
 app.get('*', function (req, res) {
-    res.render('index', {
-        mongoMessage: mongoMessage
-    });
+//    res.render('index', {
+//        mongoMessage: mongoMessage
+//    });
+    res.render('index');
 });
 
 var port = process.env.PORT || 3030;
