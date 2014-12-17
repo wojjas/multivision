@@ -3,6 +3,7 @@ var stylus = require('stylus');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('passport');
+var bodyParser = require('body-parser');
 
 module.exports = function (app, config) {
 
@@ -13,7 +14,13 @@ module.exports = function (app, config) {
     app.set('views', config.rootPath + '/server/views');
     app.set('view engine', 'jade');
     app.use(cookieParser());
-    app.use(session({secret: 'multi vision unicorns'}));
+    app.use(bodyParser.urlencoded({
+        extended: true
+    }));
+    app.use(bodyParser.json());
+    app.use(session({secret: 'multi vision unicorns',
+        saveUninitialized: true,
+        resave: true}));
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(stylus.middleware(
@@ -23,5 +30,4 @@ module.exports = function (app, config) {
         }
     ));
     app.use(express.static(config.rootPath + '/public'));
-
 }

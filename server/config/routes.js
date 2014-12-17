@@ -1,13 +1,15 @@
 'use:strict'
 var passport = require('passport');
 
+
 module.exports = function (app) {
     app.get('/partials/*', function (req, res) {
         res.render('../../public/app/' + req.params[0]);
     })
 
     app.post('/login', function (req, res, next) {
-        var auth = passport.authenticate('local', function (err, user) {
+        console.log('/login route req.body: ', req.body);
+        var auth = passport.authenticate('local', function(err, user) {
             if(err){
                 return next(err);
             }
