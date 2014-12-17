@@ -1,5 +1,8 @@
 var express = require('express');
 
+//Choose environment:
+//  On Windows: set NODE_ENV=dev  (or production)
+//  On Heroku:
 var env = process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 var config = require('./server/config/config')[env];
 var app = express();
