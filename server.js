@@ -14,27 +14,41 @@ var app = express();
 require('./server/config/express')(app, config);
 require('./server/config/mongoose')(config);
 
-var User = mongo.model('User');
+var Users = mongo.model('Users');
+
+//Users.findOne({username:'dd'}).exec(function (err, user) {
+//    if (user) {
+//        console.log('found one user');
+//    }
+//    else {
+//        console.log('didnt find any user');
+//    }
+//});
+
 passport.use(new LocalStrategy(
     function(username, password, done){
-        User.findOne({userName:username}).exec(function (err, user) {
-            if(user){
-                return done(null, user);
-            }
-            else{
-                return done(null, false);
-            }
-        })
+        console.log('Looking for user: ' + username);
+
+//        Users.findOne({username:username}).exec(function (err, user) {
+//            if(user){
+//                return done(null, user);
+//            }
+//            else{
+//                return done(null, false);
+//            }
+//        })
     }
 ));
 
 passport.serializeUser(function (user, done) {
+    console.log('Serializing user: ');
     if(user){
         done(null, user._id);
     }
 });
 passport.deserializeUser(function (id, done) {
-    User.findOne({_id:id}).exec(function (err, user) {
+    console.log('Deserializing user: ');
+    Users.findOne({_id:id}).exec(function (err, user) {
         if(user){
             return done(null, user);
         }
