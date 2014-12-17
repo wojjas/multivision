@@ -12,11 +12,17 @@
   },
   "author": "wojjas",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wojjas/multivision.git"
+  },
   "dependencies": {
     "express": "^4.10.4",
     "jade": "^1.8.1",
     "mongoose": "^3.8.20",
     "morgan": "^1.5.0",
+    "passport": "^0.2.1",
+    "passport-local": "^1.0.0",
     "stylus": "^0.49.3"
   }
 }
