@@ -1,31 +1,12 @@
 'use:strict'
-var passport = require('passport');
-
+var auth = require('./auth');
 
 module.exports = function (app) {
     app.get('/partials/*', function (req, res) {
         res.render('../../public/app/' + req.params[0]);
     })
 
-    app.post('/login', function (req, res, next) {
-        console.log('/login route req.body: ', req.body);
-        var auth = passport.authenticate('local', function(err, user) {
-            if(err){
-                return next(err);
-            }
-            if(!user){
-                res.send({success:false});
-            }
-
-            req.logIn(user, function (err) {
-                if(err){
-                    return next(err);
-                }
-                res.send({success: true, user: user});
-            })
-        });
-        auth(req, res, next);
-    })
+    app.post('/login', auth.authenticate);
 
     //Redirects to index and lets the client-side-routing route depending on what's appended to index
     app.get('*', function (req, res) {
